@@ -11,24 +11,27 @@ repos:
       - id: check-toml
       - id: check-merge-conflict
       - id: debug-statements
+        language_version: python3.12
 
   - repo: https://github.com/psf/black
     rev: 23.12.1
     hooks:
       - id: black
-        language_version: python3.11
+        language_version: python3.12
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
         args: ["--profile", "black", "--line-length", "100"]
+        language_version: python3.12
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.11
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+        language_version: python3.12
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.8.0
@@ -39,3 +42,4 @@ repos:
           - pydantic
         args: [--ignore-missing-imports, --strict]
         exclude: ^tests/
+        language_version: python3.12

@@ -1,7 +1,7 @@
 """FastAPI application entrypoint."""
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -54,7 +54,7 @@ def create_app() -> FastAPI:
     )
 
     # Health check endpoint
-    @app.get("/health", tags=["health"])
+    @app.get("/health", tags=["health"])  # type: ignore[misc]
     async def health_check() -> dict[str, str]:
         """Health check endpoint.
 
