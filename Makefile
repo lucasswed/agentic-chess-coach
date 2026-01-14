@@ -6,7 +6,7 @@ help:
 	@echo "  make install-dev  - Install development dependencies"
 	@echo "  make test         - Run test suite"
 	@echo "  make lint         - Run all linters"
-	@echo "  make format       - Format code with black and isort"
+	@echo "  make format       - Format code with black and ruff"
 	@echo "  make clean        - Remove build artifacts and cache"
 	@echo "  make run          - Start development server"
 	@echo "  make type-check   - Run mypy type checking"
@@ -27,12 +27,10 @@ test-verbose:
 lint:
 	ruff check src tests
 	black --check src tests
-	isort --check-only src tests
 	mypy src
 
 format:
 	black src tests
-	isort src tests
 	ruff check --fix src tests
 
 type-check:
