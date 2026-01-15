@@ -54,7 +54,7 @@ def create_app() -> FastAPI:
     )
 
     # Health check endpoint
-    @app.get("/health", tags=["health"])  # type: ignore[misc]
+    @app.get("/health", tags=["health"])
     async def health_check() -> dict[str, str]:
         """Health check endpoint.
 

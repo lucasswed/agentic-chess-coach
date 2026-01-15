@@ -116,8 +116,8 @@ src/
 
 ## Next: Epic 2 Preparation
 
-**Focus**: Chess Engine Integration  
-**Timeline**: Week 2  
+**Focus**: Chess Engine Integration
+**Timeline**: Week 2
 **Key Tasks**:
 1. Stockfish wrapper implementation
 2. PGN parsing
@@ -142,16 +142,16 @@ sudo apt-get install stockfish
 
 ## Troubleshooting
 
-**Q: Tests fail with import errors**  
+**Q: Tests fail with import errors**
 A: Ensure you installed with `pip install -e ".[dev]"` (note the `-e` flag)
 
-**Q: Pre-commit hooks fail**  
+**Q: Pre-commit hooks fail**
 A: Run `make format` first, then try committing again
 
-**Q: Server won't start**  
+**Q: Server won't start**
 A: Check that port 8000 is free: `lsof -i :8000` (macOS/Linux)
 
-**Q: Type errors in mypy**  
+**Q: Type errors in mypy**
 A: Acceptable in Epic 1. They'll be resolved as we add implementations.
 
 ---
@@ -189,8 +189,8 @@ Expected output: `{"status":"healthy","version":"0.1.0"}`
 
 Your foundation is **production-ready**. The code quality standards are senior-level, and you're positioned to build an impressive portfolio piece.
 
-**Current Status**: Epic 1 ✅ Complete  
-**Next Milestone**: Epic 2 (Chess Engine Integration)  
+**Current Status**: Epic 1 ✅ Complete
+**Next Milestone**: Epic 2 (Chess Engine Integration)
 **Timeline**: On track for 6-week delivery
 
 Happy coding! 🎯
