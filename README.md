@@ -1,62 +1,83 @@
 # Agentic Chess Coach
 
-An intelligent chess coaching system powered by LangGraph and FastAPI that provides personalized chess instruction through agentic AI workflows.
+An intelligent chess coaching system powered by **LangGraph** and **FastAPI** that provides personalized chess instruction through agentic AI workflows.
+
+This project is designed as a **senior-level engineering artifact** showcasing:
+
+* Agentic AI workflows for multi-step reasoning
+* Production-ready API design with FastAPI
+* Chess engine integration via Stockfish and python-chess
+* Deterministic evaluation and move classification pipelines
+* Clean architecture and professional development practices (CI/CD, testing, type safety)
+
+---
 
 ## 🎯 Project Overview
 
-This is a **senior-level engineering artifact** designed to showcase:
-- **Agentic AI workflows** using LangGraph for multi-step reasoning
-- **Production-ready API design** with FastAPI
-- **Chess engine integration** via Stockfish and python-chess
-- **Clean architecture** with proper separation of concerns
-- **Professional development practices** including CI/CD, testing, and type safety
+The system provides **personalized chess instruction** by combining:
+
+1. **Deterministic Post-Move Analysis**
+
+   * Uses Stockfish to evaluate the impact of each move
+   * Computes centipawn deltas and mate transitions
+   * Fully mover-relative, deterministic, and frozen for stability
+
+2. **Move Classification**
+
+   * Classifies moves as **BEST, GOOD, INACCURACY, MISTAKE, BLUNDER**
+   * Handles all edge cases for mate transitions
+   * Delta-based thresholds for non-mate positions
+
+3. **Agentic Workflow Layer**
+
+   * Orchestrates pipelines for real-time analysis
+   * Prepares for future AI explanations and lesson extraction
+
+---
 
 ## 🏗️ Architecture
 
 ```
 src/
-├── api/                 # FastAPI application layer
-├── agents/              # LangGraph agent definitions
-├── chess/               # Chess engine and game logic
-├── models/              # Pydantic models and schemas
-└── core/                # Shared utilities and configuration
+├── pipelines/            # Deterministic evaluation and delta calculation
+│   └── post_move_analysis.py
+├── classification/       # Move quality classification (BEST, GOOD, etc.)
+│   └── move_quality.py
+├── api/                  # FastAPI application layer
+│   └── main.py
+├── agents/               # LangGraph agent definitions
+├── chess/                # Chess game logic and utilities
+├── models/               # Pydantic models and schemas
+└── core/                 # Shared utilities and configuration
 ```
+
+**Principles:**
+
+* Separation of concerns: evaluation, classification, agent orchestration
+* Deterministic evaluation frozen before adding AI reasoning
+* Contracts for predictable API outputs
+* Test-driven development for critical edge cases (mate transitions)
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Python 3.11 or 3.12
-- Stockfish chess engine installed
-- OpenAI or Anthropic API key
+* Python 3.11 or 3.12
+* Stockfish chess engine installed
+* OpenAI or Anthropic API key
 
 ### Installation
 
-1. Clone the repository:
 ```bash
 git clone <your-repo-url>
 cd agentic-chess-coach
-```
-
-2. Create and activate virtual environment:
-```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
 pip install -e ".[dev]"
-```
-
-4. Set up environment variables:
-```bash
 cp .env.example .env
 # Edit .env with your API keys and configuration
-```
-
-5. Install pre-commit hooks:
-```bash
 pre-commit install
 ```
 
@@ -68,74 +89,86 @@ uvicorn src.api.main:app --reload
 
 Visit `http://localhost:8000/docs` for interactive API documentation.
 
+---
+
 ## 🧪 Testing
 
-Run the full test suite:
+* Run full test suite:
+
 ```bash
 pytest
 ```
 
-Run with coverage report:
+* Run with coverage report:
+
 ```bash
 pytest --cov=src --cov-report=html
 ```
+
+* Test areas include:
+
+  * Mate transitions (escaping mate, losing mate, entering mate, still winning/losing)
+  * Centipawn delta thresholds
+  * Move quality classification correctness
+
+---
 
 ## 🔍 Code Quality
 
 This project enforces strict code quality standards:
 
-- **Formatting**: Black (line length: 100)
-- **Linting**: Ruff
-- **Type checking**: Mypy (strict mode)
-- **Import sorting**: isort
+* **Formatting**: Black (line length: 100)
+* **Linting**: Ruff
+* **Type checking**: Mypy (strict mode)
+* **Import sorting**: isort
 
 Run all checks:
+
 ```bash
-# Format code
 black src tests
-
-# Sort imports
 isort src tests
-
-# Lint
 ruff check src tests
-
-# Type check
 mypy src
-```
-
-Or use pre-commit to run all checks:
-```bash
 pre-commit run --all-files
 ```
 
+---
+
 ## 📋 Development Roadmap
 
-- [x] **Epic 1**: Project foundations (Week 1)
-- [ ] **Epic 2**: Chess engine integration (Week 2)
-- [ ] **Epic 3**: LangGraph agent implementation (Week 3)
-- [ ] **Epic 4**: FastAPI endpoints (Week 4)
-- [ ] **Epic 5**: Testing and quality (Week 5)
-- [ ] **Epic 6**: Documentation and deployment (Week 6)
+| Epic   | Status     | Description                                                            |
+| ------ | ---------- | ---------------------------------------------------------------------- |
+| Epic 1 | ✅ Complete | Project foundations, CI/CD, repo structure, type safety                |
+| Epic 2 | ✅ Complete | Chess engine integration, deterministic pipelines, move classification |
+| Epic 3 | ⬜          | LangGraph agent implementation                                         |
+| Epic 4 | ⬜          | FastAPI endpoints and API contract freezing                            |
+| Epic 5 | ⬜          | Lesson extraction, LLM explanations, multi-turn memory                 |
+| Epic 6 | ⬜          | Documentation, testing improvements, deployment pipeline               |
+
+---
 
 ## 🔑 Environment Variables
 
-See `.env.example` for required configuration:
+See `.env.example` for configuration:
 
-- `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`: LLM provider credentials
-- `STOCKFISH_PATH`: Path to Stockfish binary
-- `LOG_LEVEL`: Application logging level
-- `ENVIRONMENT`: Development/production environment
+* `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`: LLM provider credentials
+* `STOCKFISH_PATH`: Path to Stockfish binary
+* `LOG_LEVEL`: Application logging level
+* `ENVIRONMENT`: Development/production environment
+
+---
 
 ## 📚 Key Technologies
 
-- **FastAPI**: Modern async web framework
-- **LangGraph**: Agentic workflow orchestration
-- **LangChain**: LLM integration abstractions
-- **python-chess**: Chess game logic and PGN parsing
-- **Stockfish**: Chess engine for analysis
-- **Pydantic**: Data validation and settings management
-- **pytest**: Testing framework with async support
+* **FastAPI**: Modern async web framework
+* **LangGraph**: Agentic workflow orchestration
+* **LangChain**: LLM integration abstractions
+* **python-chess**: Chess game logic and PGN parsing
+* **Stockfish**: Chess engine for deterministic analysis
+* **Pydantic**: Data validation and settings management
+* **pytest**: Testing framework with async support
+
+---
 
 ## 🤝 Contributing
 
@@ -147,14 +180,18 @@ This is a portfolio project, but contributions are welcome:
 4. Add tests for new features
 5. Update documentation
 
+---
+
 ## 📄 License
 
 MIT License - See LICENSE file for details
 
+---
+
 ## 📧 Contact
 
-Your Name - your.email@example.com
+Your Name - [your.email@example.com](mailto:your.email@example.com)
 
 ---
 
-**Project Status**: Epic 1 Complete ✅ | Next: Epic 2 - Chess Engine Integration
+**Project Status**: Epic 1 & 2 Complete ✅ | Next: Epic 3 - Agent Implementation

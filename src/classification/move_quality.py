@@ -1,6 +1,14 @@
 import typing
 from enum import Enum
 
+"""
+Move quality classification.
+Rules:
+    - Mate evaluations dominate centipawn logic.
+    - Stockfish evaluations are White-relative.
+    - Returned quality is relative to the mover.
+"""
+
 
 class MoveQuality(str, Enum):
     BEST = "best"
@@ -10,7 +18,7 @@ class MoveQuality(str, Enum):
     BLUNDER = "blunder"
 
 
-def mate_favors_side(mate_value: int, side: str) -> bool:
+def mate_favors_side(mate_value: int, side: typing.Literal["w", "b"]) -> bool:
     """
     Returns True if the mate favors the given side.
     Stockfish mate is always White-relative.
@@ -24,7 +32,7 @@ def mate_favors_side(mate_value: int, side: str) -> bool:
 def classify_mate(
     eval_before: dict[str, typing.Any],
     eval_after: dict[str, typing.Any],
-    side_to_move: str,
+    side_to_move: typing.Literal["w", "b"],
 ) -> MoveQuality | None:
     before_is_mate = eval_before["type"] == "mate"
     after_is_mate = eval_after["type"] == "mate"
@@ -67,7 +75,8 @@ def classify_mate(
     return MoveQuality.BEST
 
 
-def classify_move_by_delta(delta: int | None) -> MoveQuality:
+def classify_cp_delta(delta: int | None) -> MoveQuality:
+    # delta is None only when mate logic applies (handled above)
     if delta is None:
         return MoveQuality.BLUNDER
 
@@ -81,9 +90,11 @@ def classify_move_by_delta(delta: int | None) -> MoveQuality:
         return MoveQuality.BLUNDER
 
 
-def classify_move(analysis: dict[str, typing.Any], side_to_move: str) -> MoveQuality:
+def classify_move(
+    analysis: dict[str, typing.Any], side_to_move: typing.Literal["w", "b"]
+) -> MoveQuality:
     mate_result = classify_mate(analysis["before"], analysis["after"], side_to_move)
     if mate_result:
         return mate_result
 
-    return classify_move_by_delta(analysis["delta"])
+    return classify_cp_delta(analysis["delta"])
